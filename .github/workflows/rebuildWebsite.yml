@@ -1,0 +1,15 @@
+# The website reads the latest release at build time, so every published release rebuilds it.
+name: Rebuild website
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl --fail --silent --show-error -X POST -d '{}' "$BUILD_HOOK"
+        env:
+          BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
